@@ -1,0 +1,85 @@
+﻿<Window x:Class="BookManagement.View.StartMainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d" 
+        WindowStartupLocation="CenterScreen" 
+        Title="StartMainView"
+        d:DesignHeight="1080" d:DesignWidth="1920"
+        WindowState="Maximized">
+    <Window.Resources>
+        <System:Double x:Key="Width150">150</System:Double>
+        <System:Double x:Key="Width100">100</System:Double>
+        <Style TargetType="MenuItem">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="LightGray" VerticalAlignment="Top" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" BorderThickness="1 1 0 1" BorderBrush="Black">
+            <Button Grid.Column="0" cal:Message.Attach="[Event Click] = [Action OnMenu()]" Width="60" Height="30" HorizontalAlignment="Left"
+                        VerticalAlignment="Top">Menu</Button>
+            </Border>
+            <Border Grid.Column="1" BorderThickness="1 1 0 1" BorderBrush="Black">
+                
+            </Border>
+            <Border Grid.Column="2" BorderThickness="1 1 1 1" BorderBrush="Black">
+                <StackPanel  Orientation="Horizontal" >
+                    <TextBlock  Text="{Binding StrDate}" Margin="20 0 20 0" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock  Text="{Binding StrRole}" Margin="20 0 20 0" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock  Text="{Binding FullName}" Margin="20 0 20 0" VerticalAlignment="Center"></TextBlock>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+        <Grid Grid.Row="1" Margin="0 -125 0 0"  VerticalAlignment="Top">
+
+            <Border BorderThickness="1 0 1 1" BorderBrush="Black">
+            </Border>
+        </Grid>
+        <!--Row 5-->
+        <Grid Grid.Row="2" Margin="0 -120 0 0">
+            <ContentControl 
+            x:Name="ActiveItem"
+            />
+        </Grid>
+        <!--Row 6-->
+        <StackPanel Width="150" Margin="0 10 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Menu DockPanel.Dock="Top" Visibility="{Binding IsOpen}" Background="White" BorderBrush="Black" BorderThickness="1" Margin="0 20 0 0">
+                <MenuItem Header="User" >
+                    <MenuItem Header="User" Visibility="{Binding Role}"
+                              cal:Message.Attach="[Event Click] = [Action LeftMenu('SrcUser')]"/>
+                    <MenuItem Header="Infomation" 
+                              cal:Message.Attach="[Event Click] = [Action LeftMenu('SrcChangePass')]"/>
+                </MenuItem>
+
+                <MenuItem Header="Category" cal:Message.Attach="[Event Click] = [Action LeftMenu('SrcCategoty')]">
+                </MenuItem>
+
+                <MenuItem Header="Author" cal:Message.Attach="[Event Click] = [Action LeftMenu('SrcAuthor')]">
+                </MenuItem>
+
+                <MenuItem Header="Book" cal:Message.Attach="[Event Click] = [Action LeftMenu('SrcBook')]">
+                </MenuItem>
+
+                <MenuItem Header="Sign out" cal:Message.Attach="[Event Click] = [Action SignOut()]">
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+    </Grid>
+</Window>

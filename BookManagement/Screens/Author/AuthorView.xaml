@@ -1,0 +1,337 @@
+﻿<UserControl  x:Class="BookManagement.View.AuthorView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cal="http://www.caliburnproject.org"
+        mc:Ignorable="d"
+        d:DesignHeight="1080" d:DesignWidth="1920">
+    <UserControl.Resources>
+        <GridLength x:Key="ColumnWidth300">300</GridLength>
+        <GridLength x:Key="ColumnWidth200">200</GridLength>
+        <GridLength x:Key="ColumnWidth100">100</GridLength>
+        <GridLength x:Key="ColumnWidth400">400</GridLength>
+        <GridLength x:Key="ColumnWidth20">20</GridLength>
+        <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <Style x:Key="BorderSort" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0 0 0 0"/>
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+            <Setter Property="KeyboardNavigation.IsTabStop" Value="False"/>
+        </Style>
+        <Style x:Key="BorderSortName" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0 0 0 0"/>
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="KeyboardNavigation.IsTabStop" Value="False"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="HeaderTextBlockStyle">
+            <Setter Property="Margin" Value="0 0 30 0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource BulletTrainSize}"/>
+        </Style>
+        <ControlTemplate x:Key="HeaderSortingControl">
+            <Grid >
+                <Path   Visibility="{Binding CardControlAsc}"  />
+                <TextBlock Text="password" Style="{StaticResource HeaderTextBlockStyle}" />
+                <Path  Visibility="{Binding CardControlDes}"  />
+            </Grid>
+        </ControlTemplate>
+        <Style x:Key="BaseButton" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="10,0,10,0"/>
+            <Setter Property="FontFamily" Value="{DynamicResource BulletTrainFont}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="grid">
+                            <Border CornerRadius="2" BorderBrush="DarkGray" BorderThickness="1" Padding="{TemplateBinding Padding}">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="2" BlurRadius="2" Color="#FFF0F0F0"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border x:Name="border" CornerRadius="2" BorderBrush="Black" BorderThickness="1.3" Background="{DynamicResource WhiteButton}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <RadialGradientBrush GradientOrigin="0.496,1.052">
+                                            <RadialGradientBrush.RelativeTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                                                    <TranslateTransform X="0.02" Y="0.3"/>
+                                                </TransformGroup>
+                                            </RadialGradientBrush.RelativeTransform>
+                                            <GradientStop Color="{TemplateBinding Background}" Offset="1"/>
+                                            <GradientStop Color="{TemplateBinding Background}" Offset="0.3"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF87CEEB"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="BorderBrush" TargetName="border" Value="LightGray"/>
+                                <Setter Property="Background" TargetName="border" Value="#FFE9E9E9"/>
+                                <Setter Property="Foreground" Value="DarkGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="noStyleToListboxItem" TargetType="ListBoxItem">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border>
+                            <ContentPresenter></ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="calcyListbox"  TargetType="ListBox">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="MaxHeight" Value="850"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="30" Background="LightGray">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{DynamicResource ColumnWidth100}"/>
+                                    <ColumnDefinition Width="{DynamicResource ColumnWidth200}"/>
+                                    <ColumnDefinition Width="{DynamicResource ColumnWidth200}"/>
+                                    <ColumnDefinition Width="{DynamicResource ColumnWidth300}"/>
+                                    <ColumnDefinition Width="{DynamicResource ColumnWidth200}"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Style="{StaticResource BorderSortName}" cal:Message.Attach="[Event Click] = [Action SortingEvent('True')]" Grid.Column="0" Margin="0 2 0 0" >
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"></ColumnDefinition>
+                                            <ColumnDefinition Width="{DynamicResource ColumnWidth20}"></ColumnDefinition>
+
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="ID" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10 0 0 0"></TextBlock>
+                                        <Grid Grid.Column="1" >
+                                            <Path Visibility="{Binding CardNameAsc}"  Style="{StaticResource HeaderPathStyleAsc}"/>
+                                            <Path Visibility="{Binding CardNameDes}" Style="{StaticResource HeaderPathStyleDes}" />
+                                        </Grid>
+                                    </Grid>
+                                </Button>
+                                <Border BorderThickness="1,1,1,1" BorderBrush="Black" Margin=" 0 1 0 0" Grid.Column="0"></Border>
+                                
+                                <Button Style="{StaticResource BorderSortName}" cal:Message.Attach="[Event Click] = [Action SortingEvent('False')]" Grid.Column="1" Margin="0 2 0 0" >
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="180"></ColumnDefinition>
+                                            <ColumnDefinition Width="{DynamicResource ColumnWidth20}"></ColumnDefinition>
+
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Name" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10 0 0 0"></TextBlock>
+                                        <Grid Grid.Column="1" >
+                                            <Path Visibility="{Binding CardControlAsc}"  Style="{StaticResource HeaderPathStyleAsc}"/>
+                                            <Path Visibility="{Binding CardControlDes}" Style="{StaticResource HeaderPathStyleDes}" />
+                                        </Grid>
+                                    </Grid>
+                                </Button>
+                                <Border BorderThickness="0,1,1,1" BorderBrush="Black" Margin="0 1 0 0" Grid.Column="1"></Border>
+                                <Button Style="{StaticResource BorderSortName}" Content="Birthday" FontSize="20" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action SortingEvent('True')]" Grid.Column="2" Margin="0 2 0 0" >
+                                    
+                                </Button>
+                                <Border BorderThickness="0,1,1,1" BorderBrush="Black" Margin="0 1 0 0" Grid.Column="2"></Border>
+                                <Button Style="{StaticResource BorderSortName}" Content="Address" FontSize="20" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action SortingEvent('True')]" Grid.Column="3" Margin="0 2 0 0" >
+                                    
+                                </Button>
+                                <Border BorderThickness="0,1,1,1" BorderBrush="Black" Margin="0 1 0 0" Grid.Column="3"></Border>
+                                <Button Style="{StaticResource BorderSortName}" Content="Website" FontSize="20" HorizontalAlignment="Center" cal:Message.Attach="[Event Click] = [Action SortingEvent('True')]" Grid.Column="4" Margin="0 2 0 0" >
+                                    
+                                </Button>
+                                <Border BorderThickness="0,1,1,1" BorderBrush="Black" Margin="0 1 0 0" Grid.Column="4"></Border>
+                            </Grid>
+                            <Border Grid.Row="1" Background="White" BorderThickness="0">
+                                <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" CanContentScroll="False">
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" FontSize="40" HorizontalAlignment="Center" FontWeight="Bold" Foreground="DodgerBlue" Text="Author"></TextBlock>
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Border Height="200" Margin="0 50 0 0" BorderBrush="LightGray" 
+                BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <StackPanel>
+                    <TextBlock Text="Information" FontSize="30" FontWeight="Bold" Margin="0 20 0 20" HorizontalAlignment="Center" ></TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="1" Margin="0 20 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Text="Name"/>
+                                <TextBlock Text=" *" Foreground="Red"/>
+                            </StackPanel>
+                            <TextBox Grid.Row="1"  Text="{Binding NameAuthor}" Margin="0 10 0 0" Height="30" Width="170"
+                                     FontWeight="Bold"/>
+                        </Grid>
+                        <Grid Grid.Column="2" Margin="50 20 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Birthday"/>
+                            <DatePicker Grid.Row="1" FontSize="20" Text="{Binding BirthdayAuthor}" Margin="0 10 0 0" Height="30"  Width="170"/>
+                        </Grid>
+                        <Grid Grid.Column="3" Margin="50 20 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Address"/>
+                            <TextBox Grid.Row="1"  Text="{Binding AddressAuthor}" Margin="0 10 0 0" Height="30" Width="170" />
+                        </Grid>
+                        <Grid Grid.Column="4" Margin="50 20 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Website"/>
+                            <TextBox Grid.Row="1"  Text="{Binding WebsiteAuthor}" Margin="0 10 0 0" Height="30" Width="170"/>
+                        </Grid>
+                        <Grid Grid.Column="5" Margin="50 20 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Role"/>
+                            <ComboBox Grid.Row="1" ItemsSource="{Binding Path=CbbRole}"
+                                DisplayMemberPath="Control"
+                                SelectedValuePath="Control" Height="30" Width="170"
+                                 IsSynchronizedWithCurrentItem="True" FontSize="20"
+                                      SelectedIndex="{Binding Selectitem}"/>
+                                    
+                            <!--<TextBox Grid.Row="1"  Text="{Binding Role}" Margin="0 10 0 0" Height="30" Width="170"/>-->
+                        </Grid>
+
+
+                        <!--<Button Grid.Row="4" Content="Change Password" Style="{DynamicResource BaseButton}" Height="40" Width="150"
+                            Margin="0 80 0 0" HorizontalAlignment="Center"></Button>-->
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Border Background="White" BorderThickness="0 0 0 0" BorderBrush="Black" Margin="20 20 0 20">
+                <ListBox Name="id5" HorizontalAlignment="Center"  ItemsSource="{Binding ListAuthor , UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         Style="{StaticResource calcyListbox}" ItemContainerStyle="{StaticResource noStyleToListboxItem}" KeyboardNavigation.TabNavigation="None">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{DynamicResource ColumnWidth100}"/>
+                                    <ColumnDefinition Width="{DynamicResource ColumnWidth200}"/>
+                                    <ColumnDefinition Width="{DynamicResource ColumnWidth200}"/>
+                                    <ColumnDefinition Width="{DynamicResource ColumnWidth300}"/>
+                                    <ColumnDefinition Width="{DynamicResource ColumnWidth200}"/>
+                                </Grid.ColumnDefinitions>
+                                <Border BorderThickness="1,0,1,1" BorderBrush="Black" >
+                                    <TextBlock Text="{Binding ID}"  HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" 
+                                               cal:Message.Attach="[Event MouseDown] = [Action ClicklRow($eventArgs, $dataContext)]" Padding="10,0,10,0"/>
+                                </Border>
+                                <Border Grid.Column="1" BorderThickness="0,0,1,1" BorderBrush="Black" >
+                                    <TextBlock Text="{Binding Name}"  HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" 
+                                               cal:Message.Attach="[Event MouseDown] = [Action ClicklRow($eventArgs, $dataContext)]" Padding="10,0,10,0"/>
+                                </Border>
+                                <Border Grid.Column="2" BorderThickness="0,0,1,1" BorderBrush="Black" Margin="0 0 1 0">
+                                    <TextBlock Grid.Column="1"
+                                        Text="{Binding Birthday}" TextWrapping="Wrap" FontSize="20"
+                                        TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10,0,10,0"
+                                       cal:Message.Attach="[Event MouseDown] = [Action ClicklRow($eventArgs, $dataContext)]">
+                                    </TextBlock>
+                                </Border>
+                                <Border Grid.Column="3" BorderThickness="0,0,1,1" BorderBrush="Black" Margin="0 0 1 0">
+                                    <TextBlock Grid.Column="1"
+                                        Text="{Binding Address}" TextWrapping="Wrap" FontSize="20"
+                                        TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10,0,10,0"
+                                       cal:Message.Attach="[Event MouseDown] = [Action ClicklRow($eventArgs, $dataContext)]">
+                                    </TextBlock>
+                                </Border>
+                                <Border Grid.Column="4" BorderThickness="0,0,1,1" BorderBrush="Black" Margin="0 0 1 0">
+                                    <TextBlock Grid.Column="1"
+                                        Text="{Binding Website}" TextWrapping="Wrap" FontSize="20"
+                                        TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10,0,10,0"
+                                       cal:Message.Attach="[Event MouseDown] = [Action ClicklRow($eventArgs, $dataContext)]">
+                                    </TextBlock>
+                                </Border>
+                                
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="3" Margin="0 0 0 10" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Add" Style="{DynamicResource BaseButton}" Margin="0 0 50 0"
+                        cal:Message.Attach="[Event Click] = [Action AddItem()]" IsEnabled="{Binding IsEnable}"/>
+            <Button Grid.Column="1" Content="Update" Style="{DynamicResource BaseButton}" Margin="0 0 0 0"
+                        cal:Message.Attach="[Event Click] = [Action UpdateItem()]" IsEnabled="{Binding IsEnable}"/>
+            <Button Grid.Column="2" Content="Delete" Style="{DynamicResource BaseButton}" Margin="50 0 0 0"
+                    cal:Message.Attach="[Event Click] = [Action DeleteItem()]" IsEnabled="{Binding IsEnable}"/>
+            
+        </Grid>
+    </Grid>
+</UserControl >
